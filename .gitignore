@@ -17,3 +17,9 @@ obj/
 Thumbs.db
 Desktop.ini
 .DS_Store
+
+# Workshop listing and uploader config stay local
+workshop/
+
+# Local tools (e.g. the Workshop uploader) stay out of the repo
+tools/
