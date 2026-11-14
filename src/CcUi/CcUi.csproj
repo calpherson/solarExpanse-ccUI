@@ -1,0 +1,48 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net471</TargetFramework>
+    <AssemblyName>CcUi</AssemblyName>
+    <RootNamespace>CcUi</RootNamespace>
+    <LangVersion>8.0</LangVersion>
+    <Nullable>disable</Nullable>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <DebugType>portable</DebugType>
+
+    <!-- Override on the command line or via env var if the game lives elsewhere. -->
+    <SolarExpanseRoot Condition="'$(SolarExpanseRoot)' == ''">$(SOLAR_EXPANSE_ROOT)</SolarExpanseRoot>
+    <SolarExpanseRoot Condition="'$(SolarExpanseRoot)' == ''">C:\Program Files (x86)\Steam\steamapps\common\Solar Expanse</SolarExpanseRoot>
+    <BepInExCoreDir>$(SolarExpanseRoot)\BepInEx\core</BepInExCoreDir>
+    <ManagedDir>$(SolarExpanseRoot)\Solar Expanse_Data\Managed</ManagedDir>
+    <PluginDeployDir>$(SolarExpanseRoot)\BepInEx\plugins\CcUi</PluginDeployDir>
+    <!-- Set to false to build without copying into the game folder. -->
+    <DeployToGame Condition="'$(DeployToGame)' == ''">true</DeployToGame>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="BepInEx"><HintPath>$(BepInExCoreDir)\BepInEx.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="0Harmony"><HintPath>$(BepInExCoreDir)\0Harmony.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="Assembly-CSharp"><HintPath>$(ManagedDir)\Assembly-CSharp.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="Sirenix.Serialization"><HintPath>$(ManagedDir)\Sirenix.Serialization.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="Sirenix.Serialization.Config"><HintPath>$(ManagedDir)\Sirenix.Serialization.Config.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="Sirenix.Utilities"><HintPath>$(ManagedDir)\Sirenix.Utilities.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="UnityEngine"><HintPath>$(ManagedDir)\UnityEngine.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="UnityEngine.CoreModule"><HintPath>$(ManagedDir)\UnityEngine.CoreModule.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="UnityEngine.UI"><HintPath>$(ManagedDir)\UnityEngine.UI.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="UnityEngine.UIModule"><HintPath>$(ManagedDir)\UnityEngine.UIModule.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="UnityEngine.TextCoreFontEngineModule"><HintPath>$(ManagedDir)\UnityEngine.TextCoreFontEngineModule.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="Unity.TextMeshPro"><HintPath>$(ManagedDir)\Unity.TextMeshPro.dll</HintPath><Private>false</Private></Reference>
+  </ItemGroup>
+
+  <Target Name="DeployToBepInEx" AfterTargets="Build" Condition="'$(DeployToGame)' == 'true'">
+    <MakeDir Directories="$(PluginDeployDir)" />
+    <Copy SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFolder="$(PluginDeployDir)" />
+    <Copy SourceFiles="$(OutputPath)$(AssemblyName).pdb" DestinationFolder="$(PluginDeployDir)" Condition="Exists('$(OutputPath)$(AssemblyName).pdb')" />
+    <Message Text="Deployed to $(PluginDeployDir)" Importance="High" />
+  </Target>
+
+</Project>

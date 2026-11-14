@@ -1,0 +1,19 @@
+# Research notes, dumps and spikes stay local
+docs/
+
+# Build output
+bin/
+obj/
+
+# IDE / editor
+.vs/
+.idea/
+*.user
+*.suo
+*.swp
+.vscode/
+
+# OS
+Thumbs.db
+Desktop.ini
+.DS_Store
